@@ -16,13 +16,15 @@ public class GridManager : MonoBehaviour
 
     private void GenerateGrid()
     {
+        int tileCount = 0;
         GameObject referenceTile = (GameObject)Instantiate(Resources.Load("TileSprite"));
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < cols; col++)
             {
                 GameObject tile = (GameObject)Instantiate(referenceTile, transform);
-
+                tile.tag = ""+tileCount;
+                tileCount++;
                 float posX = col * tileSize;
                 float posY = row * tileSize;
 
