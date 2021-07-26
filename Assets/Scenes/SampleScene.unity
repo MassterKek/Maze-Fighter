@@ -155,10 +155,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 0}
   sprites:
-  - {fileID: 21300000, guid: 1c4b71e3278d1304da84cf9ea72a1481, type: 3}
-  - {fileID: 21300000, guid: 583883aa2aaea044886336a704f77d34, type: 3}
-  - {fileID: 21300000, guid: 9d099913d0a0cce4cac2cda527573976, type: 3}
-  - {fileID: 21300000, guid: 81945b528ef813941addb0c889ecf3ff, type: 3}
+  - {fileID: 21300000, guid: 539d80ab2ac68b649865646275901c8c, type: 3}
+  - {fileID: 21300000, guid: 22ab8d338b8f8814da55d1f83d902c35, type: 3}
+  - {fileID: 21300000, guid: 7957a0e53ecbf0e428cdf0752b0f11ef, type: 3}
+  - {fileID: 21300000, guid: 3be6529695c8fab488f65db32a80c071, type: 3}
 --- !u!212 &84925601
 SpriteRenderer:
   m_ObjectHideFlags: 0
