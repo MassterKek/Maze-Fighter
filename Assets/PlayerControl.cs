@@ -7,6 +7,7 @@ public class PlayerControl : MonoBehaviour
 
     public SpriteRenderer spriteRenderer;
     public Sprite[] sprites = new Sprite[4];
+    public int[] wallLocations = new int[]{6,11,12,16,18,21,26,27,28,31,34,43,44,45,54,61,62,66,70,71,76,78,84,85,86,87,88,96};
     GameObject currentTile;
     string direction = "down";
     int playerPos = 0;
@@ -18,37 +19,52 @@ public class PlayerControl : MonoBehaviour
 
     void MovePlayer()
     {
-        switch(playerPos)
-        {
-            case 0:
                 if(direction == "up")
                 {
-                    playerPos = 10;
-                    UpdatePosition();
+                    if(!isWall(playerPos + 10) && playerPos < 90)
+                    {
+                        playerPos += 10;
+                        UpdatePosition();
+                    }
                 }
                 else if(direction == "right")
                 {
-                    playerPos = 1;
-                    UpdatePosition();
+                    if(!isWall(playerPos + 1) && (playerPos%10) != 9)
+                    {
+                        playerPos += 1;
+                        UpdatePosition();
+                    }
                 }
-                break;
-            case 1:
-                if(direction == "left")
+                else if(direction == "left")
                 {
-                    playerPos = 0;
-                    UpdatePosition();
+                    if(!isWall(playerPos - 1) && (playerPos%10) != 0)
+                    {
+                        playerPos -= 1;
+                        UpdatePosition();
+                    }
                 }
-                break;
-            case 10:
-                if(direction == "down")
+                else
                 {
-                    playerPos = 0;
-                    UpdatePosition();
+                    if(!isWall(playerPos - 10) && playerPos >= 10)
+                    {
+                        playerPos -= 10;
+                        UpdatePosition();
+                    }
                 }
-                break;
 
+    }
+
+    private bool isWall(int pos)
+    {
+        bool res = false;
+        for(int i = 0; i < wallLocations.Length; i++)
+        {
+            if(wallLocations[i] == pos)
+            {
+                res = true;
+            }
         }
-
+        return res;
     }
 
     // Start is called before the first frame update
@@ -88,7 +104,7 @@ public class PlayerControl : MonoBehaviour
             direction = "right";
         }
 
-        if (Input.GetKey("space"))
+        if (Input.GetKeyDown("space"))
         {
             MovePlayer();
         }
