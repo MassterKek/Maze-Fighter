@@ -5,19 +5,17 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
 
-    private int rows = 10;
+    public int[] wallLocations = new int[]{6,11,12,16,18,21,26,27,28,31,34,43,44,45,54,61,62,66,70,71,76,78,84,85,86,87,88,96};
     private int cols = 10;
+
+    private int rows = 10;
     private float tileSize = 1;
-    // Start is called before the first frame update
-    void Start()
-    {
-        GenerateGrid();
-    }
 
     private void GenerateGrid()
     {
         int tileCount = 0;
         GameObject referenceTile = (GameObject)Instantiate(Resources.Load("TileSprite"));
+        GameObject referenceStone = (GameObject)Instantiate(Resources.Load("WallStone"));
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < cols; col++)
@@ -25,13 +23,22 @@ public class GridManager : MonoBehaviour
                 GameObject tile = (GameObject)Instantiate(referenceTile, transform);
                 tile.tag = ""+tileCount;
                 tileCount++;
+
                 float posX = col * tileSize;
                 float posY = row * tileSize;
 
                 tile.transform.position = new Vector2(posX, posY);
+
+                if(isWall(tileCount-1))
+                {
+                    GameObject wall = (GameObject)Instantiate(referenceStone, transform);
+                    wall.transform.position = new Vector2(posX, posY);
+                }
+
             }
         }
         Destroy(referenceTile);
+        Destroy(referenceStone);
 
         float gridW = cols * tileSize;
         float gridH = rows * tileSize;
@@ -39,9 +46,28 @@ public class GridManager : MonoBehaviour
         transform.position = new Vector2(-gridW/2 + tileSize/2, -((gridH/2)-1) - tileSize/2);
     }
 
+    private bool isWall(int pos)
+    {
+        bool res = false;
+        for(int i = 0; i < wallLocations.Length; i++)
+        {
+            if(wallLocations[i] == pos)
+            {
+                res = true;
+            }
+        }
+        return res;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        GenerateGrid();
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
