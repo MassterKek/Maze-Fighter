@@ -21,38 +21,38 @@ public class PlayerControl : MonoBehaviour
 
     void MovePlayer()
     {
-                if(direction == "up")
-                {
-                    if(!isWall(playerPos + 10) && playerPos < 90 && (playerPos + 10) != ePos)
-                    {
-                        playerPos += 10;
-                        UpdatePosition();
-                    }
-                }
-                else if(direction == "right")
-                {
-                    if(!isWall(playerPos + 1) && (playerPos%10) != 9 && (playerPos + 1) != ePos)
-                    {
-                        playerPos += 1;
-                        UpdatePosition();
-                    }
-                }
-                else if(direction == "left")
-                {
-                    if(!isWall(playerPos - 1) && (playerPos%10) != 0 && (playerPos - 1) != ePos)
-                    {
-                        playerPos -= 1;
-                        UpdatePosition();
-                    }
-                }
-                else
-                {
-                    if(!isWall(playerPos - 10) && playerPos >= 10 && (playerPos - 10) != ePos)
-                    {
-                        playerPos -= 10;
-                        UpdatePosition();
-                    }
-                }
+        if(direction == "up")
+        {
+            if(!isWall(playerPos + 10) && playerPos < 90 && (playerPos + 10) != ePos)
+            {
+                playerPos += 10;
+                UpdatePosition();
+            }
+        }
+        else if(direction == "right")
+        {
+            if(!isWall(playerPos + 1) && (playerPos%10) != 9 && (playerPos + 1) != ePos)
+            {
+                playerPos += 1;
+                UpdatePosition();
+            }
+        }
+        else if(direction == "left")
+        {
+            if(!isWall(playerPos - 1) && (playerPos%10) != 0 && (playerPos - 1) != ePos)
+            {
+                playerPos -= 1;
+                UpdatePosition();
+            }
+        }
+        else
+        {
+            if(!isWall(playerPos - 10) && playerPos >= 10 && (playerPos - 10) != ePos)
+            {
+                playerPos -= 10;
+                UpdatePosition();
+            }
+        }
 
     }
 

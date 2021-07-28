@@ -15,6 +15,8 @@ public class EnemyControl : MonoBehaviour
     int pPos = 0;
     float dirTime = 0;
     float movTime = 0;
+    public static int health;
+    public static bool dead;
 
     void ChangeSprite(int dir)
     {
@@ -23,38 +25,38 @@ public class EnemyControl : MonoBehaviour
 
     void MovePlayer()
     {
-                if(direction == "up")
-                {
-                    if(!isWall(enemyPos + 10) && enemyPos < 90 && (enemyPos + 10) != pPos)
-                    {
-                        enemyPos += 10;
-                        UpdatePosition();
-                    }
-                }
-                else if(direction == "right")
-                {
-                    if(!isWall(enemyPos + 1) && (enemyPos%10) != 9 && (enemyPos + 1) != pPos)
-                    {
-                        enemyPos += 1;
-                        UpdatePosition();
-                    }
-                }
-                else if(direction == "left")
-                {
-                    if(!isWall(enemyPos - 1) && (enemyPos%10) != 0 && (enemyPos - 1) != pPos)
-                    {
-                        enemyPos -= 1;
-                        UpdatePosition();
-                    }
-                }
-                else
-                {
-                    if(!isWall(enemyPos - 10) && enemyPos >= 10 && (enemyPos - 10) != pPos)
-                    {
-                        enemyPos -= 10;
-                        UpdatePosition();
-                    }
-                }
+        if(direction == "up")
+        {
+            if(!isWall(enemyPos + 10) && enemyPos < 90 && (enemyPos + 10) != pPos)
+            {
+                enemyPos += 10;
+                UpdatePosition();
+            }
+        }
+        else if(direction == "right")
+        {
+            if(!isWall(enemyPos + 1) && (enemyPos%10) != 9 && (enemyPos + 1) != pPos)
+            {
+                enemyPos += 1;
+                UpdatePosition();
+            }
+        }
+        else if(direction == "left")
+        {
+            if(!isWall(enemyPos - 1) && (enemyPos%10) != 0 && (enemyPos - 1) != pPos)
+            {
+                enemyPos -= 1;
+                UpdatePosition();
+            }
+        }
+        else
+        {
+            if(!isWall(enemyPos - 10) && enemyPos >= 10 && (enemyPos - 10) != pPos)
+            {
+                enemyPos -= 10;
+                UpdatePosition();
+            }
+        }
 
     }
 
@@ -74,6 +76,8 @@ public class EnemyControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        health = 100;
+        dead = false;
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = 1;
     }
@@ -127,6 +131,14 @@ public class EnemyControl : MonoBehaviour
         currentTile = GameObject.FindWithTag(""+enemyPos);
         Debug.Log("Moving to tile: " + enemyPos);
         transform.position = currentTile.transform.position;
+    }
+
+    void TakeDamage (int damage) {
+        health -= damage;
+
+        if (health == 0) {
+            dead = true;
+        }
     }
 
 }
