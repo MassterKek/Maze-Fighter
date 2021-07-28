@@ -9,8 +9,10 @@ public class PlayerControl : MonoBehaviour
     public Sprite[] sprites = new Sprite[4];
     public int[] wallLocations = new int[]{6,11,12,16,18,21,26,27,28,31,34,43,44,45,54,61,62,66,70,71,76,78,84,85,86,87,88,96};
     GameObject currentTile;
+    GameObject enemy;
     string direction = "down";
-    int playerPos = 0;
+    public int playerPos = 0;
+    int ePos = 99;
 
     void ChangeSprite(int dir)
     {
@@ -21,7 +23,7 @@ public class PlayerControl : MonoBehaviour
     {
                 if(direction == "up")
                 {
-                    if(!isWall(playerPos + 10) && playerPos < 90)
+                    if(!isWall(playerPos + 10) && playerPos < 90 && (playerPos + 10) != ePos)
                     {
                         playerPos += 10;
                         UpdatePosition();
@@ -29,7 +31,7 @@ public class PlayerControl : MonoBehaviour
                 }
                 else if(direction == "right")
                 {
-                    if(!isWall(playerPos + 1) && (playerPos%10) != 9)
+                    if(!isWall(playerPos + 1) && (playerPos%10) != 9 && (playerPos + 1) != ePos)
                     {
                         playerPos += 1;
                         UpdatePosition();
@@ -37,7 +39,7 @@ public class PlayerControl : MonoBehaviour
                 }
                 else if(direction == "left")
                 {
-                    if(!isWall(playerPos - 1) && (playerPos%10) != 0)
+                    if(!isWall(playerPos - 1) && (playerPos%10) != 0 && (playerPos - 1) != ePos)
                     {
                         playerPos -= 1;
                         UpdatePosition();
@@ -45,7 +47,7 @@ public class PlayerControl : MonoBehaviour
                 }
                 else
                 {
-                    if(!isWall(playerPos - 10) && playerPos >= 10)
+                    if(!isWall(playerPos - 10) && playerPos >= 10 && (playerPos - 10) != ePos)
                     {
                         playerPos -= 10;
                         UpdatePosition();
@@ -72,13 +74,16 @@ public class PlayerControl : MonoBehaviour
     {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = 1;
-
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdatePosition();
+
+        enemy = GameObject.Find("Enemy");
+        EnemyControl cs = enemy.GetComponent<EnemyControl>();
+        ePos = cs.enemyPos;
 
         if (Input.GetKey("up"))
         {

@@ -104,6 +104,7 @@ TagManager:
   - 97
   - 98
   - 99
+  - Enemy
   layers:
   - Default
   - TransparentFX
