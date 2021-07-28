@@ -3,7 +3,9 @@ guid: cbe53730b9f8a23479ffd7c9159867c7
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - firePoint: {instanceID: 0}
+  - stone: {fileID: 6401673744970082219, guid: 9baaf43eb5b712646a5e5a16c18a8d66, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
