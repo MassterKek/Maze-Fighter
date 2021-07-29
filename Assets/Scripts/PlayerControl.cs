@@ -12,6 +12,7 @@ public class PlayerControl : MonoBehaviour
     public static string direction = "down";
     public int playerPos = 0;
     int ePos = 99;
+    int health;
 
     void ChangeSprite(int dir)
     {
@@ -70,7 +71,8 @@ public class PlayerControl : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    {   
+        health = 100;
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = 1;
     }

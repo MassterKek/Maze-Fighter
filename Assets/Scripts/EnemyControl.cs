@@ -15,8 +15,7 @@ public class EnemyControl : MonoBehaviour
     int pPos = 0;
     float dirTime = 0;
     float movTime = 0;
-    public static int health;
-    public static bool dead;
+    int health;
 
     void ChangeSprite(int dir)
     {
@@ -77,7 +76,6 @@ public class EnemyControl : MonoBehaviour
     void Start()
     {
         health = 100;
-        dead = false;
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = 1;
     }
@@ -135,10 +133,6 @@ public class EnemyControl : MonoBehaviour
 
     void TakeDamage (int damage) {
         health -= damage;
-
-        if (health == 0) {
-            dead = true;
-        }
     }
 
 }
