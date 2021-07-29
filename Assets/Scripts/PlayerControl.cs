@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
-
     public SpriteRenderer spriteRenderer;
     public Sprite[] sprites = new Sprite[4];
     public int[] wallLocations = new int[]{6,11,12,16,18,21,26,27,28,31,34,43,44,45,54,61,62,66,70,71,76,78,84,85,86,87,88,96};
     GameObject currentTile;
     GameObject enemy;
-    string direction = "down";
+    public static string direction = "down";
     public int playerPos = 0;
     int ePos = 99;
 

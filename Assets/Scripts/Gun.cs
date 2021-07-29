@@ -16,6 +16,6 @@ public class Gun : MonoBehaviour
 
     public void shoot() {
         Instantiate(stone, firePoint.position, firePoint.rotation);
-        
+        Destroy(stone, 1.0f);
     }
 }

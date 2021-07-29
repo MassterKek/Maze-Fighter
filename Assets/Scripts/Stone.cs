@@ -5,37 +5,43 @@ using UnityEngine;
 public class Stone : MonoBehaviour
 {
     public float stone_speed;
-    public static Rigidbody2D rb;
+    public Rigidbody2D rb;
     public int damage;
 
     void Start()
     {
         damage = 20;
-        rb.velocity = transform.right * stone_speed;
+        //rb.velocity = transform.up * stone_speed * Time.deltaTime;
+        Direction();
     }
 
-    private void OnTriggerEnter2D(Collider2D hit) {
+    void Direction() {
+        string player_direction = PlayerControl.direction;
 
-        // if (EnemyControl.enemy != null) {
-        //     enemy.TakeDamage(damage);
-        // }
-    } 
+        if (player_direction.Equals("up")) {
+            rb.velocity = transform.up * stone_speed * Time.deltaTime;
+            transform.position = transform.position + new Vector3(0f, 4.5f, 0f);
+        } 
 
-    // public static void Invert() {
-    //     if (Input.GetKey("up")) {
-    //         rb.position = transform.Rotate(0f, 90f, 0f, 0f);
-    //     }
+        if (player_direction.Equals("left")) {
+            rb.velocity = -transform.right * stone_speed * Time.deltaTime;
+            transform.position = -transform.right + new Vector3(4.5f, 0f, 0f);
+        } 
 
-    //     if (Input.GetKey("left")) {
-    //         rb.position = transform.Rotate(-180f, 0f, 0f, 0f);
-    //     }
+        if (player_direction.Equals("down")) {
+            rb.velocity = -transform.up * stone_speed * Time.deltaTime;
+            transform.position = transform.position + new Vector3(0f, -4.5f, 0f);
+        } 
 
-    //     if (Input.GetKey("down")) {
-    //         rb.position = transform.Rotate(0f, -90f, 0f, 0f);
-    //     }
+        if (player_direction.Equals("right")) {
+            rb.velocity = transform.right * stone_speed * Time.deltaTime;
+            transform.position = transform.position + new Vector3(-4.5f, 0f, 0f);
+        } 
+    }
 
-    //     if (Input.GetKey("right")) {
-    //         rb.position = transform.Rotate(180f, 0f, 0f, 0f);
+    // private void OnTriggerEnter2D(Collider2D hit) {
+    //     if (EnemyControl.enemy != null) {
+    //         enemy.TakeDamage(damage);
     //     }
     // }
 }
