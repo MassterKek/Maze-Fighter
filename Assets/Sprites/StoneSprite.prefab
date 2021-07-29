@@ -134,6 +134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f68f064bfc47f5c45bb29e0f1b93fada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stone_speed: 450
-  rb: {fileID: 0}
+  stone_speed: 400
+  rb: {fileID: 6401673744970082216}
   damage: 20

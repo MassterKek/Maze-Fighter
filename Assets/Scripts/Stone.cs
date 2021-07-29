@@ -20,22 +20,22 @@ public class Stone : MonoBehaviour
 
         if (player_direction.Equals("up")) {
             rb.velocity = transform.up * stone_speed * Time.deltaTime;
-            transform.position = transform.position + new Vector3(0f, 4.5f, 0f);
+            //transform.position = transform.position + new Vector3(0f, 4.5f, 0f);
         } 
 
         if (player_direction.Equals("left")) {
             rb.velocity = -transform.right * stone_speed * Time.deltaTime;
-            transform.position = -transform.right + new Vector3(4.5f, 0f, 0f);
+            //transform.position = -transform.right + new Vector3(4.5f, 0f, 0f);
         } 
 
         if (player_direction.Equals("down")) {
             rb.velocity = -transform.up * stone_speed * Time.deltaTime;
-            transform.position = transform.position + new Vector3(0f, -4.5f, 0f);
+            //transform.position = transform.position + new Vector3(0f, -4.5f, 0f);
         } 
 
         if (player_direction.Equals("right")) {
             rb.velocity = transform.right * stone_speed * Time.deltaTime;
-            transform.position = transform.position + new Vector3(-4.5f, 0f, 0f);
+            //transform.position = transform.position + new Vector3(-4.5f, 0f, 0f);
         } 
     }
 
