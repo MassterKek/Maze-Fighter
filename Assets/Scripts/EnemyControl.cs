@@ -8,6 +8,8 @@ public class EnemyControl : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Sprite[] sprites = new Sprite[4];
     public int[] wallLocations = new int[]{6,11,12,16,18,21,26,27,28,31,34,43,44,45,54,61,62,66,70,71,76,78,84,85,86,87,88,96};
+    public string[] states = new string[]{"Patrol","Track","Heal", "Hunt"};
+    public string curState = "Patrol";
     GameObject currentTile;
     GameObject player;
     string direction = "down";
@@ -71,6 +73,66 @@ public class EnemyControl : MonoBehaviour
         return res;
     }
 
+    void lookUp()
+    {
+        ChangeSprite(0);
+        direction = "up";
+    }
+    void lookDown()
+    {
+        ChangeSprite(1);
+        direction = "down";
+    }
+    void lookLeft()
+    {
+        ChangeSprite(2);
+        direction = "left";
+    }
+    void lookRight()
+    {
+        ChangeSprite(3);
+        direction = "right";
+    }
+
+    void UpdatePatrolState()
+    {
+        // Change direction every 2 seconds       
+        if (dirTime > 1.0)
+        {
+            dirTime = 0;
+            int dice = Random.Range(1, 5);;
+
+            switch (dice)
+            {
+                case 1:
+                    lookUp();
+                    break;
+                case 2:
+                    lookDown();
+                    break;
+                case 3:
+                    lookLeft();
+                    break;
+                case 4:
+                    lookRight();
+                    break;
+            }
+        }
+        // Move every second
+        if (movTime > 1.0) 
+        {
+            movTime = 0;
+            MovePlayer();
+        }
+    }
+
+    void UpdatePosition()
+    {
+        currentTile = GameObject.FindWithTag(""+enemyPos);
+        //Debug.Log("Moving to tile: " + enemyPos);
+        transform.position = currentTile.transform.position;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -89,44 +151,14 @@ public class EnemyControl : MonoBehaviour
         PlayerControl cs = player.GetComponent<PlayerControl>();
         pPos = cs.playerPos;
 
-        if (dirTime > 2.0)
+        switch (curState)
         {
-            dirTime = 0;
-            int dice = Random.Range(1, 5);;
-
-            switch (dice)
-            {
-                case 1:
-                    ChangeSprite(0);
-                    direction = "up";
-                    break;
-                case 2:
-                    ChangeSprite(1);
-                    direction = "down";
-                    break;
-                case 3:
-                    ChangeSprite(2);
-                    direction = "left";
-                    break;
-                case 4:
-                    ChangeSprite(3);
-                    direction = "right";
-                    break;
-            }
+            case "Patrol": 
+                UpdatePatrolState();
+                break;
         }
-        
-        if (movTime > 1.0) 
-        {
-            movTime = 0;
-            MovePlayer();
-        }
-    }
 
-    void UpdatePosition()
-    {
-        currentTile = GameObject.FindWithTag(""+enemyPos);
-        Debug.Log("Moving to tile: " + enemyPos);
-        transform.position = currentTile.transform.position;
+
     }
 
 }
