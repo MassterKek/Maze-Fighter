@@ -6,16 +6,16 @@ public class Gun : MonoBehaviour
 {
     public Transform firePoint;
     public GameObject stone;
-    
+
+    public void shoot() {
+        GameObject bullet = Instantiate(stone, firePoint.position, firePoint.rotation);
+        Destroy(bullet, 1.0f);
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0)) {
             shoot();
         }
-    }   
-
-    public void shoot() {
-        Instantiate(stone, firePoint.position, firePoint.rotation);
-        Destroy(stone, 1.0f);
     }
 }
