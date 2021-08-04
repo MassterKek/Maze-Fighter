@@ -315,7 +315,7 @@ public class EnemyControl : MonoBehaviour
         transform.position = currentTile.transform.position;
     }
 
-    void TakeDamage (int damage) {
+    public void TakeDamage (int damage) {
         health -= damage;
     }
 
