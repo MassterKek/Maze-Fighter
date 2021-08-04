@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class EnemyControl : MonoBehaviour
     public string state = "Patrol";
     public int enemyPos = 99;
     public int lastPos = 99;
+    bool blocked = false;
     int pPos = 0;
     public float timer = 0.5f;
     public float movTime = 0;
@@ -169,7 +171,7 @@ public class EnemyControl : MonoBehaviour
             int dice = 1;
             while(choosing)
             {
-                dice = Random.Range(0, 4);
+                dice = UnityEngine.Random.Range(0, 4);
                 if (moves[dice] == 1)
 			        choosing = false;
                 if (numMoves > 1 && nextTile(dice) == lastPos)
@@ -238,7 +240,15 @@ public class EnemyControl : MonoBehaviour
                 }
 
                 passed.Add(curTile);
-                curTile = (int)bfs.Dequeue();
+                try
+                {
+                    curTile = (int)bfs.Dequeue();
+                }
+                catch(Exception e)
+                {
+                    state = "Patrol";
+                    searching = false;
+                }
                 
                 if(curTile == goal)
                 {
@@ -246,26 +256,27 @@ public class EnemyControl : MonoBehaviour
                 }
 
             }
-            Debug.Log("curTile = " + curTile);
-            while(parent[curTile] != enemyPos)
-            {
-                curTile = parent[curTile];
-            }
-            Debug.Log("Move to " + curTile);
 
-            if (curTile%10 == enemyPos%10)
-                if (curTile > enemyPos)
-                    changeDirection(0);
-                else
-                    changeDirection(1);
+                Debug.Log("curTile = " + curTile);
+                while(parent[curTile] != enemyPos)
+                {
+                    curTile = parent[curTile];
+                }
+                Debug.Log("Move to " + curTile);
 
-            if (curTile/10 == enemyPos/10)
-                if (curTile < enemyPos)
-                    changeDirection(2);
-                else
-                    changeDirection(3);
-            
-            MovePlayer();
+                if (curTile%10 == enemyPos%10)
+                    if (curTile > enemyPos)
+                        changeDirection(0);
+                    else
+                        changeDirection(1);
+
+                if (curTile/10 == enemyPos/10)
+                    if (curTile < enemyPos)
+                        changeDirection(2);
+                    else
+                        changeDirection(3);
+                
+                MovePlayer();
 
             if(enemyPos == goal)
             {
@@ -415,6 +426,5 @@ public class EnemyControl : MonoBehaviour
     {
         return ((!isWall(objPos + 1)) && (objPos%10 + 1 <= 9) && (objPos + 1 != pPos));
     }
-
 
 }
