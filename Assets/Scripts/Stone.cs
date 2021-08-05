@@ -7,6 +7,7 @@ public class Stone : MonoBehaviour
     public float stone_speed;
     public Rigidbody2D rb;
     public int damage;
+    EnemyControl enemy;
 
     void Start()
     {
@@ -39,7 +40,11 @@ public class Stone : MonoBehaviour
 
         if (hit.gameObject.GetComponent<SpriteRenderer>()) {
             Debug.Log("DAMAGE");
-            //EnemyControl.TakeDamage(damage);;
+            enemy.TakeDamage(damage);
+
+            //enemy = FindObjectsOfType<EnemyControl>().TakeDamage(damage);
+            //EnemyControl.TakeDamage(damage);
+            //FindObjectsOfType<EnemyControl>().TakeDamage(damage);
         }
     }
 }

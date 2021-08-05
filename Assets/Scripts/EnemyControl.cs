@@ -317,6 +317,10 @@ public class EnemyControl : MonoBehaviour
 
     public void TakeDamage (int damage) {
         health -= damage;
+
+        if (health < 0) {
+            Destroy(hit.gameObject);
+        }
     }
 
     bool isVisible()
