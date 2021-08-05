@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class EnemyControl : MonoBehaviour
 {
+    public EnemyControl(){
+
+    }
 
     public SpriteRenderer spriteRenderer;
     public Sprite[] sprites = new Sprite[4];
@@ -319,7 +322,7 @@ public class EnemyControl : MonoBehaviour
         health -= damage;
 
         if (health < 0) {
-            Destroy(hit.gameObject);
+            Destroy(player.gameObject);
         }
     }
 

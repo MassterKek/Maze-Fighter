@@ -12,7 +12,7 @@ public class PlayerControl : MonoBehaviour
     public static string direction = "down";
     public int playerPos = 0;
     int ePos = 99;
-    int health;
+    public int health;
 
     void ChangeSprite(int dir)
     {
