@@ -162,6 +162,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3be6529695c8fab488f65db32a80c071, type: 3}
   wallLocations: 060000000b0000000c0000001000000012000000150000001a0000001b0000001c0000001f000000220000002b0000002c0000002d000000360000003d0000003e0000004200000046000000470000004c0000004e000000540000005500000056000000570000005800000060000000
   playerPos: 0
+  health: 0
 --- !u!212 &84925601
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -380,6 +381,7 @@ GameObject:
   - component: {fileID: 641661927}
   - component: {fileID: 641661926}
   - component: {fileID: 641661928}
+  - component: {fileID: 641661929}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -471,7 +473,30 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0cf8f304bc192b048834ff4c04fabd70, type: 3}
   - {fileID: 21300000, guid: dae632e9406d7074a8e7ccfcb38a984c, type: 3}
   wallLocations: 060000000b0000000c0000001000000012000000150000001a0000001b0000001c0000001f000000220000002b0000002c0000002d000000360000003d0000003e0000004200000046000000470000004c0000004e000000540000005500000056000000570000005800000060000000
+  state: Patrol
   enemyPos: 99
+  lastPos: 99
+  timer: 0.5
+  movTime: 0
+  goal: 0
+  health: 0
+  weaponCount: 0
+--- !u!58 &641661929
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 641661925}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &895262275
 GameObject:
   m_ObjectHideFlags: 0
