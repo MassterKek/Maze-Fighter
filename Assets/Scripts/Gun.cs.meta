@@ -6,6 +6,7 @@ MonoImporter:
   defaultReferences:
   - firePoint: {instanceID: 0}
   - stone: {fileID: 6401673744970082219, guid: 9baaf43eb5b712646a5e5a16c18a8d66, type: 3}
+  - cube: {fileID: 5172972067862404666, guid: 3e841474443aa6f40bda557d7d38b80c, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
