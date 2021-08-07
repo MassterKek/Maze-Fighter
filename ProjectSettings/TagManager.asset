@@ -105,6 +105,7 @@ TagManager:
   - 98
   - 99
   - Enemy
+  - Item
   layers:
   - Default
   - TransparentFX

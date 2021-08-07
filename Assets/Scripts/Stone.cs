@@ -7,6 +7,7 @@ public class Stone : MonoBehaviour
     public float stone_speed;
     public Rigidbody2D rb;
     public int damage;
+    //public int hitCount = 0;
     //public EnemyControl enemy;
 
     void Start()
@@ -47,7 +48,12 @@ public class Stone : MonoBehaviour
             //FindObjectsOfType<EnemyControl>().TakeDamage(damage);
         // }
         if (hit.gameObject.tag == "Enemy") {
-            Debug.Log("DAMAGE");
+            Debug.Log("DAMAGE\n-20 of health");
+            // hitCount++;
+
+            // if (hitCount == 5) {
+            //     Destroy(, 0f);
+            // }
         }
     }
 }
