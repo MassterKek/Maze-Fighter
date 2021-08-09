@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 84925600}
   - component: {fileID: 84925603}
   - component: {fileID: 84925604}
+  - component: {fileID: 84925605}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -260,6 +261,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!50 &84925605
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84925599}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &386476191
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,6 +421,7 @@ GameObject:
   - component: {fileID: 641661926}
   - component: {fileID: 641661928}
   - component: {fileID: 641661929}
+  - component: {fileID: 641661930}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -514,6 +537,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!50 &641661930
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 641661925}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &895262275
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,6 +595,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 934290248831386448, guid: ba6a60f3e3a3b26459559676e68c63fb, type: 3}
+      propertyPath: m_BodyType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1431596958406834515, guid: ba6a60f3e3a3b26459559676e68c63fb, type: 3}
       propertyPath: m_RootOrder
       value: 4
