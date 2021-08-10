@@ -55,5 +55,10 @@ public class Stone : MonoBehaviour
             //     Destroy(, 0f);
             // }
         }
+
+        if (hit.gameObject.name == "WallStone(Clone)(Clone)") {
+            Debug.Log("HIT A WALL");
+            Destroy(gameObject, 0.0f);
+        }
     }
 }

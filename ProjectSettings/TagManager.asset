@@ -106,6 +106,7 @@ TagManager:
   - 99
   - Enemy
   - Item
+  - Wall
   layers:
   - Default
   - TransparentFX
