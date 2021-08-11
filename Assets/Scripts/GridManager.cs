@@ -14,8 +14,11 @@ public class GridManager : MonoBehaviour
     private void GenerateGrid()
     {
         int tileCount = 0;
+        
         GameObject referenceTile = (GameObject)Instantiate(Resources.Load("TileSprite"));
         GameObject referenceStone = (GameObject)Instantiate(Resources.Load("WallStone"));
+        //GameObject referenceHealth = (GameObject)Instantiate(Resources.Load("HealthSprite"));
+
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < cols; col++)

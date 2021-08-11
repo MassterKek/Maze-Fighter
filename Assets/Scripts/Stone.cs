@@ -7,13 +7,10 @@ public class Stone : MonoBehaviour
     public float stone_speed;
     public Rigidbody2D rb;
     public int damage;
-    //public int hitCount = 0;
-    //public EnemyControl enemy;
 
     void Start()
     {
         damage = 20;
-        //rb.velocity = transform.up * stone_speed * Time.deltaTime;
         Direction();
     }
 
@@ -38,22 +35,8 @@ public class Stone : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D hit) {
-
-        // if (hit.gameObject.GetComponent<SpriteRenderer>()) {
-        //     Debug.Log("DAMAGE");
-        //     enemy.TakeDamage(damage);
-
-            //enemy = FindObjectsOfType<EnemyControl>().TakeDamage(damage);
-            //EnemyControl.TakeDamage(damage);
-            //FindObjectsOfType<EnemyControl>().TakeDamage(damage);
-        // }
         if (hit.gameObject.tag == "Enemy") {
             Debug.Log("DAMAGE\n-20 of health");
-            // hitCount++;
-
-            // if (hitCount == 5) {
-            //     Destroy(, 0f);
-            // }
         }
 
         if (hit.gameObject.name == "WallStone(Clone)(Clone)") {
