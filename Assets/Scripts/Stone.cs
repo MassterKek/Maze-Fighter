@@ -11,7 +11,6 @@ public class Stone : MonoBehaviour
     void Start()
     {
         damage = 20;
-        //rb.velocity = transform.up * stone_speed * Time.deltaTime;
         Direction();
     }
 
@@ -20,28 +19,29 @@ public class Stone : MonoBehaviour
 
         if (player_direction.Equals("up")) {
             rb.velocity = transform.up * stone_speed * Time.deltaTime;
-            //transform.position = transform.position + new Vector3(0f, 4.5f, 0f);
         } 
 
         if (player_direction.Equals("left")) {
             rb.velocity = -transform.right * stone_speed * Time.deltaTime;
-            //transform.position = -transform.right + new Vector3(4.5f, 0f, 0f);
         } 
 
         if (player_direction.Equals("down")) {
             rb.velocity = -transform.up * stone_speed * Time.deltaTime;
-            //transform.position = transform.position + new Vector3(0f, -4.5f, 0f);
         } 
 
         if (player_direction.Equals("right")) {
             rb.velocity = transform.right * stone_speed * Time.deltaTime;
-            //transform.position = transform.position + new Vector3(-4.5f, 0f, 0f);
         } 
     }
 
-    // private void OnTriggerEnter2D(Collider2D hit) {
-    //     if (EnemyControl.enemy != null) {
-    //         enemy.TakeDamage(damage);
-    //     }
-    // }
+    private void OnTriggerEnter2D(Collider2D hit) {
+        if (hit.gameObject.tag == "Enemy") {
+            Debug.Log("DAMAGE\n-20 of health");
+        }
+
+        if (hit.gameObject.name == "WallStone(Clone)(Clone)") {
+            Debug.Log("HIT A WALL");
+            Destroy(gameObject, 0.0f);
+        }
+    }
 }

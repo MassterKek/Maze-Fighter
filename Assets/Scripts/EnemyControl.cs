@@ -433,4 +433,8 @@ public class EnemyControl : MonoBehaviour
         return ((!isWall(objPos + 10)) && (objPos + 10 <= 99) && (objPos + 10 != pPos));
     }
 
+    int xPos(int location)
+    {
+        return location%10;
+    }
 }

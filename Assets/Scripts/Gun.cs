@@ -9,7 +9,7 @@ public class Gun : MonoBehaviour
 
     public void shoot() {
         GameObject bullet = Instantiate(stone, firePoint.position, firePoint.rotation);
-        Destroy(bullet, 1.0f);
+        Destroy(bullet, 1.5f);
     }
 
     void Update()
