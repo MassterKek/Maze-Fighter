@@ -21,6 +21,7 @@ public class EnemyControl : MonoBehaviour
     int pPos = 0;
     GameObject player;
 
+<<<<<<< Updated upstream
     public void takeDamage (int damage) {
         health -= damage;
 
@@ -29,6 +30,8 @@ public class EnemyControl : MonoBehaviour
         }
     }
 
+=======
+>>>>>>> Stashed changes
     private bool isWall(int pos)
     {
         bool res = false;
@@ -50,11 +53,14 @@ public class EnemyControl : MonoBehaviour
         return res;
     }
 
+<<<<<<< Updated upstream
     private int xPos(int location)
     {
         return location%10;
     }
 
+=======
+>>>>>>> Stashed changes
     private int yPos(int location)
     {
         return location/10;
@@ -433,4 +439,12 @@ public class EnemyControl : MonoBehaviour
         return ((!isWall(objPos + 10)) && (objPos + 10 <= 99) && (objPos + 10 != pPos));
     }
 
+<<<<<<< Updated upstream
+=======
+    int xPos(int location)
+    {
+        return location%10;
+    }
+
+>>>>>>> Stashed changes
 }

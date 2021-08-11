@@ -5,7 +5,10 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     public static string direction = "down";
+<<<<<<< Updated upstream
     public int health;
+=======
+>>>>>>> Stashed changes
     public int playerPos = 0;
     public SpriteRenderer spriteRenderer;
     public Sprite[] sprites = new Sprite[4];
@@ -13,6 +16,10 @@ public class PlayerControl : MonoBehaviour
     GameObject currentTile;
     int ePos = 99;
     GameObject enemy;
+<<<<<<< Updated upstream
+=======
+    int health;
+>>>>>>> Stashed changes
 
     private bool isWall(int pos)
     {
