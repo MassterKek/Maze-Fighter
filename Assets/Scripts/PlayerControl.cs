@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
+    public static string direction = "down";
+    public int health;
+    public int playerPos = 0;
     public SpriteRenderer spriteRenderer;
     public Sprite[] sprites = new Sprite[4];
-    public int[] wallLocations = new int[]{6,11,12,16,18,21,26,27,28,31,34,43,44,45,54,61,62,66,70,71,76,78,84,85,86,87,88,96};
+    public int[] wallLocations;
     GameObject currentTile;
-    GameObject enemy;
-    public static string direction = "down";
-    public int playerPos = 0;
     int ePos = 99;
-    public int health;
+    GameObject enemy;
+
+    private bool isWall(int pos)
+    {
+        bool res = false;
+        for(int i = 0; i < wallLocations.Length; i++)
+        {
+            if(wallLocations[i] == pos)
+            {
+                res = true;
+            }
+        }
+        return res;
+    }
 
     void ChangeSprite(int dir)
     {
@@ -56,22 +69,10 @@ public class PlayerControl : MonoBehaviour
 
     }
 
-    private bool isWall(int pos)
-    {
-        bool res = false;
-        for(int i = 0; i < wallLocations.Length; i++)
-        {
-            if(wallLocations[i] == pos)
-            {
-                res = true;
-            }
-        }
-        return res;
-    }
-
     // Start is called before the first frame update
     void Start()
-    {   
+    {
+        wallLocations = GridManager.wallLocations;
         health = 100;
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = 1;

@@ -4,21 +4,17 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-
-    public int[] wallLocations = new int[]{6,11,12,16,18,21,26,27,28,31,34,43,44,45,54,61,62,66,70,71,76,78,84,85,86,87,88,96};
+    public static int[] wallLocations = new int[]{11,12,16,18,21,26,28,31,34,43,44,45,54,61,62,66,71,76,78,84,85,86,88};
     private int cols = 10;
-
+    private int numItems = 0;
     private int rows = 10;
     private float tileSize = 1;
 
     private void GenerateGrid()
     {
         int tileCount = 0;
-        
         GameObject referenceTile = (GameObject)Instantiate(Resources.Load("TileSprite"));
         GameObject referenceStone = (GameObject)Instantiate(Resources.Load("WallStone"));
-        //GameObject referenceHealth = (GameObject)Instantiate(Resources.Load("HealthSprite"));
-
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < cols; col++)

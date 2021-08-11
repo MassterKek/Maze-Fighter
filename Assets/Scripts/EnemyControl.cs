@@ -5,22 +5,60 @@ using UnityEngine;
 
 public class EnemyControl : MonoBehaviour
 {
-    public SpriteRenderer spriteRenderer;
-    public Sprite[] sprites = new Sprite[4];
-    public int[] wallLocations = new int[]{6,11,12,16,18,21,26,27,28,31,34,43,44,45,54,61,62,66,70,71,76,78,84,85,86,87,88,96};
-    GameObject currentTile;
-    GameObject player;
-    public static string direction = "down";
-    public string state = "Patrol";
     public int enemyPos = 99;
-    public int lastPos = 99;
-    bool blocked = false;
-    int pPos = 0;
-    public float timer = 0.5f;
-    public float movTime = 0;
     public int goal;
     public int health;
-    public int weaponCount;
+    public int lastPos = 99;
+    public float movTime = 0;
+    public bool scouting = false;
+    public SpriteRenderer spriteRenderer;
+    public Sprite[] sprites = new Sprite[4];
+    public string state = "Patrol";
+    public float timer = 0.5f;
+    public int[] wallLocations;
+    GameObject currentTile;
+    string direction = "down";
+    int pPos = 0;
+    GameObject player;
+
+    public void takeDamage (int damage) {
+        health -= damage;
+
+        if (health < 0) {
+            Destroy(hit.gameObject);
+        }
+    }
+
+    private bool isWall(int pos)
+    {
+        bool res = false;
+        for(int i = 0; i < wallLocations.Length; i++)
+        {
+            if(wallLocations[i] == pos)
+            {
+                res = true;
+            }
+        }
+        return res;
+    }
+
+    private bool toRight(int objPos)
+    {
+        bool res = false;
+        if (xPos(objPos) > xPos(enemyPos))
+            res = true;
+        return res;
+    }
+
+    private int xPos(int location)
+    {
+        return location%10;
+    }
+
+    private int yPos(int location)
+    {
+        return location/10;
+    }
 
     void ChangeSprite(int dir)
     {
@@ -68,26 +106,18 @@ public class EnemyControl : MonoBehaviour
 
     }
 
-    private bool isWall(int pos)
-    {
-        bool res = false;
-        for(int i = 0; i < wallLocations.Length; i++)
-        {
-            if(wallLocations[i] == pos)
-            {
-                res = true;
-            }
-        }
-        return res;
-    }
-
     // Start is called before the first frame update
     void Start()
     {
+        wallLocations = GridManager.wallLocations;
         goal = 90;
         health = 100;
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = 1;
+    }
+
+    void TakeDamage (int damage) {
+        health -= damage;
     }
 
     // Update is called once per frame
@@ -100,7 +130,7 @@ public class EnemyControl : MonoBehaviour
         PlayerControl cs = player.GetComponent<PlayerControl>();
         pPos = cs.playerPos;
 
-        if(weaponCount==0)state="Scout";
+        if(scouting)state="Scout";
         else state="Patrol";
 
         switch(state)
@@ -111,30 +141,9 @@ public class EnemyControl : MonoBehaviour
             case "Scout":
                 UpdateScout();
                 break;
-            
+
         }
 
-    }
-
-    void changeDirection(int res)
-    {
-        ChangeSprite(res);
-
-        switch (res)
-        {
-            case 0:
-                direction = "up";
-                break;
-            case 1:
-                direction = "down";
-                break;
-            case 2:
-                direction = "left";
-                break;
-            case 3:
-                direction = "right";
-                break;
-        }
     }
 
     void UpdatePatrol()
@@ -165,7 +174,7 @@ public class EnemyControl : MonoBehaviour
                 moves[3] = 1;
                 numMoves++;
             }
-            
+
             bool choosing = true;
             int dice = 1;
             while(choosing)
@@ -185,6 +194,13 @@ public class EnemyControl : MonoBehaviour
 
     }
 
+    void UpdatePosition()
+    {
+        currentTile = GameObject.FindWithTag(""+enemyPos);
+        //Debug.Log("Moving to tile: " + enemyPos);
+        transform.position = currentTile.transform.position;
+    }
+
     void UpdateScout()
     {
         if(movTime > timer)
@@ -198,7 +214,7 @@ public class EnemyControl : MonoBehaviour
             ArrayList passed= new ArrayList();
 
             bool searching = true;
-            
+
             //each index refers to a tile, and the value at that index represents
             //the tile that preceded it in the path
             int[] parent = new int[100];
@@ -248,7 +264,7 @@ public class EnemyControl : MonoBehaviour
                     state = "Patrol";
                     searching = false;
                 }
-                
+
                 if(curTile == goal)
                 {
                     searching = false;
@@ -274,17 +290,109 @@ public class EnemyControl : MonoBehaviour
                         changeDirection(2);
                     else
                         changeDirection(3);
-                
+
                 MovePlayer();
 
             if(enemyPos == goal)
             {
-                weaponCount++;
+                scouting=false;
                 state = "Patrol";
             }
         }
     }
 
+    void changeDirection(int res)
+    {
+        ChangeSprite(res);
+
+        switch (res)
+        {
+            case 0:
+                direction = "up";
+                break;
+            case 1:
+                direction = "down";
+                break;
+            case 2:
+                direction = "left";
+                break;
+            case 3:
+                direction = "right";
+                break;
+        }
+    }
+
+    bool downClear(int objPos)
+    {
+        return ((!isWall(objPos - 10)) && (objPos - 10 >= 0) && (objPos - 10 != pPos));
+    }
+
+    bool inCol()
+    {
+        bool res = false;
+        if (pPos%10 == enemyPos%10)
+            res = true;
+        return res;
+    }
+
+    bool inRow()
+    {
+        bool res = false;
+        if (pPos/10 == enemyPos/10)
+            res = true;
+        return res;
+    }
+
+    bool isVisible()
+    {
+        bool foundStone = false;
+        if (inRow())
+        {
+            if (toRight(pPos))
+            {
+                for (int i=enemyPos+1; i<pPos; i++)
+                {
+                    if (isWall(i))
+                        foundStone = true;
+                }
+            }
+            else
+            {
+                for (int i=pPos+1; i<enemyPos; i++)
+                {
+                    if (isWall(i))
+                        foundStone = true;
+                }
+            }
+        }
+        else if (inCol())
+        {
+            if (toAbove(pPos))
+            {
+
+                for (int i=enemyPos+10; i<pPos; i+=10)
+                {
+                    if (isWall(i))
+                        foundStone = true;
+                }
+            }
+            else
+            {
+                for (int i=pPos+10; i<enemyPos; i+=10)
+                {
+                    if (isWall(i))
+                        foundStone = true;
+                }
+            }
+        }
+        return !foundStone;
+    }
+
+    bool leftClear(int objPos)
+    {
+        return ((!isWall(objPos - 1)) && (objPos%10 - 1 >= 0) && (objPos - 1 != pPos));
+
+    }
 
     int nextTile(int dir)
     {
@@ -307,98 +415,9 @@ public class EnemyControl : MonoBehaviour
         return temp;
     }
 
-    void UpdatePosition()
+    bool rightClear(int objPos)
     {
-        currentTile = GameObject.FindWithTag(""+enemyPos);
-        //Debug.Log("Moving to tile: " + enemyPos);
-        transform.position = currentTile.transform.position;
-    }
-
-    public void TakeDamage (int damage) {
-        health -= damage;
-
-        if (health < 0) {
-            Destroy(player.gameObject);
-        }
-    }
-
-    bool isVisible()
-    {
-        bool foundStone = false;
-        if (inRow())
-        {	
-            if (toRight(pPos))
-            {
-                for (int i=enemyPos+1; i<pPos; i++)
-                {
-                    if (isWall(i))
-                        foundStone = true;
-                }
-            }
-            else
-            {
-                for (int i=pPos+1; i<enemyPos; i++)
-                {
-                    if (isWall(i))
-                        foundStone = true;
-                }
-            }
-        }
-        else if (inCol())
-        {
-            if (toAbove(pPos))
-            {
-                
-                for (int i=enemyPos+10; i<pPos; i+=10)
-                {
-                    if (isWall(i))
-                        foundStone = true;
-                }
-            }
-            else
-            {
-                for (int i=pPos+10; i<enemyPos; i+=10)
-                {
-                    if (isWall(i))
-                        foundStone = true;
-                }
-            }
-        }
-        return !foundStone;
-    }
-
-    bool inRow()
-    {
-        bool res = false;
-        if (pPos/10 == enemyPos/10)
-            res = true;
-        return res;
-    }
-
-    bool inCol()
-    {
-        bool res = false;
-        if (pPos%10 == enemyPos%10)
-            res = true;
-        return res;
-    }
-
-    int xPos(int location)
-    {
-        return location%10;
-    }
-
-    private int yPos(int location)
-    {
-        return location/10;
-    }
-
-    private bool toRight(int objPos)
-    {
-        bool res = false;
-        if (xPos(objPos) > xPos(enemyPos))
-            res = true;
-        return res;
+        return ((!isWall(objPos + 1)) && (objPos%10 + 1 <= 9) && (objPos + 1 != pPos));
     }
 
     bool toAbove(int objPos)
@@ -412,22 +431,6 @@ public class EnemyControl : MonoBehaviour
     bool upClear(int objPos)
     {
         return ((!isWall(objPos + 10)) && (objPos + 10 <= 99) && (objPos + 10 != pPos));
-    }
-
-    bool downClear(int objPos)
-    {
-        return ((!isWall(objPos - 10)) && (objPos - 10 >= 0) && (objPos - 10 != pPos));
-    }
-
-    bool leftClear(int objPos)
-    {
-        return ((!isWall(objPos - 1)) && (objPos%10 - 1 >= 0) && (objPos - 1 != pPos));
-
-    }
-
-    bool rightClear(int objPos)
-    {
-        return ((!isWall(objPos + 1)) && (objPos%10 + 1 <= 9) && (objPos + 1 != pPos));
     }
 
 }
