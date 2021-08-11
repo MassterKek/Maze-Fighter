@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     public static string direction = "down";
+    public int health;
     public int playerPos = 0;
     public SpriteRenderer spriteRenderer;
     public Sprite[] sprites = new Sprite[4];
@@ -12,7 +13,6 @@ public class PlayerControl : MonoBehaviour
     GameObject currentTile;
     int ePos = 99;
     GameObject enemy;
-    int health;
 
     private bool isWall(int pos)
     {

@@ -21,6 +21,14 @@ public class EnemyControl : MonoBehaviour
     int pPos = 0;
     GameObject player;
 
+    public void takeDamage (int damage) {
+        health -= damage;
+
+        if (health < 0) {
+            Destroy(hit.gameObject);
+        }
+    }
+
     private bool isWall(int pos)
     {
         bool res = false;
@@ -40,6 +48,11 @@ public class EnemyControl : MonoBehaviour
         if (xPos(objPos) > xPos(enemyPos))
             res = true;
         return res;
+    }
+
+    private int xPos(int location)
+    {
+        return location%10;
     }
 
     private int yPos(int location)
@@ -418,11 +431,6 @@ public class EnemyControl : MonoBehaviour
     bool upClear(int objPos)
     {
         return ((!isWall(objPos + 10)) && (objPos + 10 <= 99) && (objPos + 10 != pPos));
-    }
-
-    int xPos(int location)
-    {
-        return location%10;
     }
 
 }
