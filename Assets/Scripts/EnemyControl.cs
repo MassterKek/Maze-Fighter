@@ -10,16 +10,26 @@ public class EnemyControl : MonoBehaviour
     public int health;
     public int lastPos = 99;
     public float movTime = 0;
-    public bool scouting = false;
+
     public SpriteRenderer spriteRenderer;
     public Sprite[] sprites = new Sprite[4];
     public string state = "Patrol";
     public float timer = 0.5f;
-    public int[] wallLocations;
+    public int[] wallLocations = new int[]{6,11,12,16,18,21,26,27,28,31,34,43,44,45,54,61,62,66,70,71,76,78,84,85,86,87,88,96};
+    public int weaponCount;
+    bool blocked = false;
     GameObject currentTile;
     string direction = "down";
     int pPos = 0;
     GameObject player;
+
+    public void takeDamage (int damage) {
+        health -= damage;
+
+        if (health < 0) {
+            Destroy(hit.gameObject);
+        }
+    }
 
     private bool isWall(int pos)
     {
@@ -96,7 +106,6 @@ public class EnemyControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        wallLocations = GridManager.wallLocations;
         goal = 90;
         health = 100;
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
@@ -117,7 +126,7 @@ public class EnemyControl : MonoBehaviour
         PlayerControl cs = player.GetComponent<PlayerControl>();
         pPos = cs.playerPos;
 
-        if(scouting)state="Scout";
+        if(weaponCount==0)state="Scout";
         else state="Patrol";
 
         switch(state)
@@ -282,7 +291,7 @@ public class EnemyControl : MonoBehaviour
 
             if(enemyPos == goal)
             {
-                scouting=false;
+                weaponCount++;
                 state = "Patrol";
             }
         }
