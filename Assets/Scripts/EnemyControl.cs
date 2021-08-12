@@ -24,9 +24,9 @@ public class EnemyControl : MonoBehaviour
     private bool isWall(int pos)
     {
         bool res = false;
-        for(int i = 0; i < wallLocations.Length; i++)
+        for (int i = 0; i < wallLocations.Length; i++)
         {
-            if(wallLocations[i] == pos)
+            if (wallLocations[i] == pos)
             {
                 res = true;
             }
@@ -44,12 +44,12 @@ public class EnemyControl : MonoBehaviour
 
     private int xPos(int location)
     {
-        return location%10;
+        return location % 10;
     }
 
     private int yPos(int location)
     {
-        return location/10;
+        return location / 10;
     }
 
     void ChangeSprite(int dir)
@@ -59,27 +59,27 @@ public class EnemyControl : MonoBehaviour
 
     void MovePlayer()
     {
-        if(direction == "up")
+        if (direction == "up")
         {
-            if(!isWall(enemyPos + 10) && enemyPos < 90 && (enemyPos + 10) != pPos)
+            if (!isWall(enemyPos + 10) && enemyPos < 90 && (enemyPos + 10) != pPos)
             {
                 lastPos = enemyPos;
                 enemyPos += 10;
                 UpdatePosition();
             }
         }
-        else if(direction == "right")
+        else if (direction == "right")
         {
-            if(!isWall(enemyPos + 1) && (enemyPos%10) != 9 && (enemyPos + 1) != pPos)
+            if (!isWall(enemyPos + 1) && (enemyPos % 10) != 9 && (enemyPos + 1) != pPos)
             {
                 lastPos = enemyPos;
                 enemyPos += 1;
                 UpdatePosition();
             }
         }
-        else if(direction == "left")
+        else if (direction == "left")
         {
-            if(!isWall(enemyPos - 1) && (enemyPos%10) != 0 && (enemyPos - 1) != pPos)
+            if (!isWall(enemyPos - 1) && (enemyPos % 10) != 0 && (enemyPos - 1) != pPos)
             {
                 lastPos = enemyPos;
                 enemyPos -= 1;
@@ -88,7 +88,7 @@ public class EnemyControl : MonoBehaviour
         }
         else
         {
-            if(!isWall(enemyPos - 10) && enemyPos >= 10 && (enemyPos - 10) != pPos)
+            if (!isWall(enemyPos - 10) && enemyPos >= 10 && (enemyPos - 10) != pPos)
             {
                 lastPos = enemyPos;
                 enemyPos -= 10;
@@ -110,7 +110,8 @@ public class EnemyControl : MonoBehaviour
     void Update()
     {
 
-        if (health < 0) {
+        if (health < 0)
+        {
             Destroy(gameObject, 0.0f);
         }
 
@@ -120,10 +121,10 @@ public class EnemyControl : MonoBehaviour
         player = GameObject.Find("Player");
         pPos = PlayerControl.playerPos;
 
-        if(scouting)state="Scout";
-        else state="Patrol";
+        if (scouting) state = "Scout";
+        else state = "Patrol";
 
-        switch(state)
+        switch (state)
         {
             case "Patrol":
                 UpdatePatrol();
@@ -131,18 +132,36 @@ public class EnemyControl : MonoBehaviour
             case "Scout":
                 UpdateScout();
                 break;
-
         }
+    }
 
+    void UpdateHeal()
+    {
+        if (GridManager.availableHealth > 0)
+        {
+            int i = 0;
+            bool searching = true;
+            while (searching)
+            {
+                if (i >= GridManager.MAX_ITEMS || GridManager.healChecks[healZones[i]] == 1)
+                    searching = false;
+                else
+                    i++;
+            }
+            goal = GridManager.healZones[i];
+            UpdateScout();
+        }
+        else
+            UpdatePatrol();
     }
 
     void UpdatePatrol()
     {
-        if (movTime > timer*2)
+        if (movTime > timer * 2)
         {
             movTime = 0;
 
-            int[] moves = new int[]{0,0,0,0};
+            int[] moves = new int[] { 0, 0, 0, 0 };
             int numMoves = 0;
             if (upClear(enemyPos))
             {
@@ -167,14 +186,14 @@ public class EnemyControl : MonoBehaviour
 
             bool choosing = true;
             int dice = 1;
-            while(choosing)
+            while (choosing)
             {
                 dice = UnityEngine.Random.Range(0, 4);
                 if (moves[dice] == 1)
-			        choosing = false;
+                    choosing = false;
                 if (numMoves > 1 && nextTile(dice) == lastPos)
                     choosing = true;
-                if(numMoves == 0)
+                if (numMoves == 0)
                     choosing = false;
             }
 
@@ -186,14 +205,14 @@ public class EnemyControl : MonoBehaviour
 
     void UpdatePosition()
     {
-        currentTile = GameObject.FindWithTag(""+enemyPos);
+        currentTile = GameObject.FindWithTag("" + enemyPos);
         //Debug.Log("Moving to tile: " + enemyPos);
         transform.position = currentTile.transform.position;
     }
 
     void UpdateScout()
     {
-        if(movTime > timer)
+        if (movTime > timer)
         {
             movTime = 0;
 
@@ -201,7 +220,7 @@ public class EnemyControl : MonoBehaviour
 
             Queue bfs = new Queue();
             bfs.Enqueue(curTile);
-            ArrayList passed= new ArrayList();
+            ArrayList passed = new ArrayList();
 
             bool searching = true;
 
@@ -211,36 +230,36 @@ public class EnemyControl : MonoBehaviour
             parent[enemyPos] = lastPos;
             while (searching)
             {
-                if (upClear(curTile) && !passed.Contains(curTile+10))
+                if (upClear(curTile) && !passed.Contains(curTile + 10))
                 {
-                    parent[curTile+10] = curTile;
-                    if(!bfs.Contains(curTile+10))
+                    parent[curTile + 10] = curTile;
+                    if (!bfs.Contains(curTile + 10))
                     {
-                        bfs.Enqueue(curTile+10);
+                        bfs.Enqueue(curTile + 10);
                     }
                 }
-                if (downClear(curTile) && !passed.Contains(curTile-10))
+                if (downClear(curTile) && !passed.Contains(curTile - 10))
                 {
-                    parent[curTile-10] = curTile;
-                    if(!bfs.Contains(curTile-10))
+                    parent[curTile - 10] = curTile;
+                    if (!bfs.Contains(curTile - 10))
                     {
-                        bfs.Enqueue(curTile-10);
+                        bfs.Enqueue(curTile - 10);
                     }
                 }
-                if (leftClear(curTile) && !passed.Contains(curTile-1))
+                if (leftClear(curTile) && !passed.Contains(curTile - 1))
                 {
-                    parent[curTile-1] = curTile;
-                    if(!bfs.Contains(curTile-1))
+                    parent[curTile - 1] = curTile;
+                    if (!bfs.Contains(curTile - 1))
                     {
-                        bfs.Enqueue(curTile-1);
+                        bfs.Enqueue(curTile - 1);
                     }
                 }
-                if (rightClear(curTile) && !passed.Contains(curTile+1))
+                if (rightClear(curTile) && !passed.Contains(curTile + 1))
                 {
-                    parent[curTile+1] = curTile;
-                    if(!bfs.Contains(curTile+1))
+                    parent[curTile + 1] = curTile;
+                    if (!bfs.Contains(curTile + 1))
                     {
-                        bfs.Enqueue(curTile+1);
+                        bfs.Enqueue(curTile + 1);
                     }
                 }
 
@@ -249,43 +268,43 @@ public class EnemyControl : MonoBehaviour
                 {
                     curTile = (int)bfs.Dequeue();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     state = "Patrol";
                     searching = false;
                 }
 
-                if(curTile == goal)
+                if (curTile == goal)
                 {
                     searching = false;
                 }
 
             }
 
-                Debug.Log("curTile = " + curTile);
-                while(parent[curTile] != enemyPos)
-                {
-                    curTile = parent[curTile];
-                }
-                Debug.Log("Move to " + curTile);
-
-                if (curTile%10 == enemyPos%10)
-                    if (curTile > enemyPos)
-                        changeDirection(0);
-                    else
-                        changeDirection(1);
-
-                if (curTile/10 == enemyPos/10)
-                    if (curTile < enemyPos)
-                        changeDirection(2);
-                    else
-                        changeDirection(3);
-
-                MovePlayer();
-
-            if(enemyPos == goal)
+            Debug.Log("curTile = " + curTile);
+            while (parent[curTile] != enemyPos)
             {
-                scouting=false;
+                curTile = parent[curTile];
+            }
+            Debug.Log("Move to " + curTile);
+
+            if (curTile % 10 == enemyPos % 10)
+                if (curTile > enemyPos)
+                    changeDirection(0);
+                else
+                    changeDirection(1);
+
+            if (curTile / 10 == enemyPos / 10)
+                if (curTile < enemyPos)
+                    changeDirection(2);
+                else
+                    changeDirection(3);
+
+            MovePlayer();
+
+            if (enemyPos == goal)
+            {
+                scouting = false;
                 state = "Patrol";
             }
         }
@@ -317,29 +336,10 @@ public class EnemyControl : MonoBehaviour
         return ((!isWall(objPos - 10)) && (objPos - 10 >= 0) && (objPos - 10 != pPos));
     }
 
-    void healthFinder()
-    {
-        if(GridManager.availableHealth > 0)
-        {
-            int i = 0;
-            bool searching = true;
-            while(searching)
-            {
-                if( i >= GridManager.MAX_ITEMS || GridManager.healChecks[healZones[i]] == 1)
-                    searching = false;
-                else
-                    i++;
-            }
-            goal = GridManager.healZones[i];
-        }
-        else
-            state = "Patrol";
-    }
-
     bool inCol()
     {
         bool res = false;
-        if (pPos%10 == enemyPos%10)
+        if (pPos % 10 == enemyPos % 10)
             res = true;
         return res;
     }
@@ -347,7 +347,7 @@ public class EnemyControl : MonoBehaviour
     bool inRow()
     {
         bool res = false;
-        if (pPos/10 == enemyPos/10)
+        if (pPos / 10 == enemyPos / 10)
             res = true;
         return res;
     }
@@ -359,7 +359,7 @@ public class EnemyControl : MonoBehaviour
         {
             if (toRight(pPos))
             {
-                for (int i=enemyPos+1; i<pPos; i++)
+                for (int i = enemyPos + 1; i < pPos; i++)
                 {
                     if (isWall(i))
                         foundStone = true;
@@ -367,7 +367,7 @@ public class EnemyControl : MonoBehaviour
             }
             else
             {
-                for (int i=pPos+1; i<enemyPos; i++)
+                for (int i = pPos + 1; i < enemyPos; i++)
                 {
                     if (isWall(i))
                         foundStone = true;
@@ -379,7 +379,7 @@ public class EnemyControl : MonoBehaviour
             if (toAbove(pPos))
             {
 
-                for (int i=enemyPos+10; i<pPos; i+=10)
+                for (int i = enemyPos + 10; i < pPos; i += 10)
                 {
                     if (isWall(i))
                         foundStone = true;
@@ -387,7 +387,7 @@ public class EnemyControl : MonoBehaviour
             }
             else
             {
-                for (int i=pPos+10; i<enemyPos; i+=10)
+                for (int i = pPos + 10; i < enemyPos; i += 10)
                 {
                     if (isWall(i))
                         foundStone = true;
@@ -399,26 +399,26 @@ public class EnemyControl : MonoBehaviour
 
     bool leftClear(int objPos)
     {
-        return ((!isWall(objPos - 1)) && (objPos%10 - 1 >= 0) && (objPos - 1 != pPos));
+        return ((!isWall(objPos - 1)) && (objPos % 10 - 1 >= 0) && (objPos - 1 != pPos));
 
     }
 
     int nextTile(int dir)
     {
         int temp = enemyPos;
-        switch(dir)
+        switch (dir)
         {
             case 0:
-                temp+=10;
+                temp += 10;
                 break;
             case 1:
-                temp-=10;
+                temp -= 10;
                 break;
             case 2:
-                temp-=1;
+                temp -= 1;
                 break;
             case 3:
-                temp+=1;
+                temp += 1;
                 break;
         }
         return temp;
@@ -426,7 +426,7 @@ public class EnemyControl : MonoBehaviour
 
     bool rightClear(int objPos)
     {
-        return ((!isWall(objPos + 1)) && (objPos%10 + 1 <= 9) && (objPos + 1 != pPos));
+        return ((!isWall(objPos + 1)) && (objPos % 10 + 1 <= 9) && (objPos + 1 != pPos));
     }
 
     bool toAbove(int objPos)
