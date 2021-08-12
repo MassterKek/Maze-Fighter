@@ -5,29 +5,21 @@ using UnityEngine;
 
 public class EnemyControl : MonoBehaviour
 {
-    public int enemyPos = 99;
-    public int goal;
-    public int health;
+    public static string direction = "down";
+    public static int enemyPos = 99;
+    public static int goal;
+    public static int health;
+    public static string state = "Patrol";
     public int lastPos = 99;
     public float movTime = 0;
     public bool scouting = false;
     public SpriteRenderer spriteRenderer;
     public Sprite[] sprites = new Sprite[4];
-    public string state = "Patrol";
     public float timer = 0.5f;
     public int[] wallLocations;
     GameObject currentTile;
-    string direction = "down";
     int pPos = 0;
     GameObject player;
-
-    public void takeDamage (int damage) {
-        health -= damage;
-
-        if (health < 0) {
-            Destroy(hit.gameObject);
-        }
-    }
 
     private bool isWall(int pos)
     {
@@ -123,12 +115,16 @@ public class EnemyControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (health < 0) {
+            Destroy(gameObject, 0.0f);
+        }
+
         movTime += Time.deltaTime;
         UpdatePosition();
 
         player = GameObject.Find("Player");
-        PlayerControl cs = player.GetComponent<PlayerControl>();
-        pPos = cs.playerPos;
+        pPos = PlayerControl.playerPos;
 
         if(scouting)state="Scout";
         else state="Patrol";
@@ -431,10 +427,5 @@ public class EnemyControl : MonoBehaviour
     bool upClear(int objPos)
     {
         return ((!isWall(objPos + 10)) && (objPos + 10 <= 99) && (objPos + 10 != pPos));
-    }
-
-    int xPos(int location)
-    {
-        return location%10;
     }
 }

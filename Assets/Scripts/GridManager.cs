@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
+    public static int availableHealth = 0;
     public static int[] wallLocations = new int[]{11,12,16,18,21,26,28,31,34,43,44,45,54,61,62,66,71,76,78,84,85,86,88};
+    public GameObject healthDrop;
+    public float spawnTime = 10.0f;
     private int cols = 10;
-    private int numItems = 0;
     private int rows = 10;
     private float tileSize = 1;
+    float spawnTimer = 0;
 
     private void GenerateGrid()
     {
@@ -67,6 +70,34 @@ public class GridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        spawnTimer+=Time.deltaTime;
+        if(spawnTimer>spawnTime)
+        {
+            spawnTimer=0;
+            if (availableHealth < 4)
+            {
+                int chance = UnityEngine.Random.Range(0, 2);
+                if (chance > 0)
+                {
+                    bool choosing = true;
+                    int square;
+                    while(choosing)
+                    {
+                        square = UnityEngine.Random.Range(0, 100);
+                        if(!isWall(square) && square!=PlayerControl.playerPos && square!=EnemyControl.enemyPos)
+                        {
+                            choosing = false;
+                        }
+                        availableHealth+=1;
+
+                        GameObject currentTile = GameObject.FindWithTag(""+square);
+                        GameObject pack = Instantiate(healthDrop);
+                        pack.transform.position=currentTile.transform.position;
+                    }
+
+                }
+            }
+        }
 
     }
 }
