@@ -13,8 +13,6 @@ public class HealthPack : MonoBehaviour
                 PlayerControl.health = 100;
             else
                 PlayerControl.health += 50;
-
-            GridManager.availableHealth-=1;
             Destroy(gameObject, 0.0f);
         }
         else if (hit.gameObject.tag == "Enemy") {
@@ -23,7 +21,6 @@ public class HealthPack : MonoBehaviour
                 EnemyControl.health = 100;
             else
                 EnemyControl.health += 50;
-            GridManager.availableHealth-=1;
             Destroy(gameObject, 0.0f);
         }
     }

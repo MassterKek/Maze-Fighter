@@ -98,7 +98,6 @@ public class EnemyControl : MonoBehaviour
 
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         wallLocations = GridManager.wallLocations;
@@ -108,11 +107,6 @@ public class EnemyControl : MonoBehaviour
         spriteRenderer.sortingOrder = 1;
     }
 
-    void TakeDamage (int damage) {
-        health -= damage;
-    }
-
-    // Update is called once per frame
     void Update()
     {
 
@@ -321,6 +315,25 @@ public class EnemyControl : MonoBehaviour
     bool downClear(int objPos)
     {
         return ((!isWall(objPos - 10)) && (objPos - 10 >= 0) && (objPos - 10 != pPos));
+    }
+
+    void healthFinder()
+    {
+        if(GridManager.availableHealth > 0)
+        {
+            int i = 0;
+            bool searching = true;
+            while(searching)
+            {
+                if( i >= GridManager.MAX_ITEMS || GridManager.healChecks[healZones[i]] == 1)
+                    searching = false;
+                else
+                    i++;
+            }
+            goal = GridManager.healZones[i];
+        }
+        else
+            state = "Patrol";
     }
 
     bool inCol()
