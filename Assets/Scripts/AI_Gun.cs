@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AI_Weapon : MonoBehaviour
+public class AI_Gun : MonoBehaviour
 {
     public Transform firePoint;
     public GameObject lazer;

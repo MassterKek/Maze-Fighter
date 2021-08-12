@@ -5,8 +5,9 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     public static string direction = "down";
-    public int health;
-    public int playerPos = 0;
+    public static int health;
+    public static int playerPos = 0;
+    public static int weaponCount = 0;
     public SpriteRenderer spriteRenderer;
     public Sprite[] sprites = new Sprite[4];
     public int[] wallLocations;
@@ -74,6 +75,7 @@ public class PlayerControl : MonoBehaviour
     {
         wallLocations = GridManager.wallLocations;
         health = 100;
+        weaponCount = 2;
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = 1;
     }
@@ -84,8 +86,7 @@ public class PlayerControl : MonoBehaviour
         UpdatePosition();
 
         enemy = GameObject.Find("Enemy");
-        EnemyControl cs = enemy.GetComponent<EnemyControl>();
-        ePos = cs.enemyPos;
+        ePos = EnemyControl.enemyPos;
 
         if (Input.GetKey("up"))
         {
@@ -115,6 +116,11 @@ public class PlayerControl : MonoBehaviour
         {
             MovePlayer();
         }
+
+        // if (Input.GetMouseButtonDown(0) && weaponCount>0) {
+        //     weaponCount-=1;
+        //     Gun.shoot();
+        // }
     }
 
     void UpdatePosition()
