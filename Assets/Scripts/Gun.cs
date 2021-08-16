@@ -5,17 +5,17 @@ using UnityEngine;
 public class Gun : MonoBehaviour
 {
     public Transform firePoint;
-    public GameObject stone;
+    public GameObject lazer;
 
     public void shoot() {
-        GameObject bullet = Instantiate(stone, firePoint.position, firePoint.rotation);
+        GameObject bullet = Instantiate(lazer, firePoint.position, firePoint.rotation);
         Destroy(bullet, 1.5f);
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && PlayerControl.weaponCount > 0) {
-            //PlayerControl.weaponCount-=1;
+        if (Input.GetKeyDown(KeyCode.C) && PlayerControl.cooldown > PlayerControl.cdTime) {
+            PlayerControl.cooldown = 0;
             shoot();
         }
     }

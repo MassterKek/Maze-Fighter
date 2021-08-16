@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
+    public static float cdTime = 5.0f;
+    public static float cooldown = 5.0f;
     public static string direction = "down";
     public static int health;
     public static int playerPos = 0;
@@ -15,6 +17,7 @@ public class PlayerControl : MonoBehaviour
     int ePos = 99;
     GameObject enemy;
 
+    // Lets the player know if a given location is a wall
     private bool isWall(int pos)
     {
         bool res = false;
@@ -28,11 +31,13 @@ public class PlayerControl : MonoBehaviour
         return res;
     }
 
+    // Used to change sprites to simulate movement
     void ChangeSprite(int dir)
     {
         spriteRenderer.sprite = sprites[dir];
     }
 
+    // Used to move player
     void MovePlayer()
     {
         if(direction == "up")
@@ -70,7 +75,7 @@ public class PlayerControl : MonoBehaviour
 
     }
 
-    // Start is called before the first frame update
+    // Start
     void Start()
     {
         wallLocations = GridManager.wallLocations;
@@ -80,10 +85,19 @@ public class PlayerControl : MonoBehaviour
         spriteRenderer.sortingOrder = 1;
     }
 
-    // Update is called once per frame
+    // Main Update
     void Update()
     {
+
+        // Game Over Scenario
+        if (health <= 0)
+        {
+            Destroy(gameObject, 0.0f);
+        }
+
         UpdatePosition();
+
+        cooldown+=Time.deltaTime;
 
         enemy = GameObject.Find("Enemy");
         ePos = EnemyControl.enemyPos;
@@ -123,6 +137,7 @@ public class PlayerControl : MonoBehaviour
         // }
     }
 
+    // Used to update player's position
     void UpdatePosition()
     {
         currentTile = GameObject.FindWithTag(""+playerPos);

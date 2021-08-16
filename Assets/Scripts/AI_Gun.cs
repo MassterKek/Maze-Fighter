@@ -14,8 +14,9 @@ public class AI_Gun : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) {
+        if (EnemyControl.shotClear == true) {
             shoot();
+            EnemyControl.shotClear = false;
         }
     }
 }
