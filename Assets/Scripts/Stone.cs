@@ -10,9 +10,9 @@ public class Stone : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D hit) {
         if (hit.gameObject.tag == "Enemy") {
-            Debug.Log("DAMAGE\n-20 of health");
             EnemyControl.health-=20;
             Destroy(gameObject, 0.0f);
+            Debug.Log("Enemy health: "+EnemyControl.health);
         }
 
         if (hit.gameObject.name == "WallStone(Clone)(Clone)") {

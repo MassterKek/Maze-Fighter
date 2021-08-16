@@ -6,23 +6,21 @@ public class GridManager : MonoBehaviour
 {
     public static int MAX_ITEMS = 4;
     public static int availableHealth = 0;
+    //public static int availableWeapon = 0;
+
     public static int[] healChecks = new int[100];
     public static int[] healZones = new int[]{9, 35, 53, 90};
     public static int[] wallLocations = new int[]{11,12,16,18,21,26,28,31,34,43,44,45,54,61,62,66,71,76,78,84,85,86,88};
-    public static int[] weaponChecks = new int[100];
-    public static int[] weaponZones = new int[]{22, 33, 55, 87};
+    //public static int[] weaponChecks = new int[100];
+    //public static int[] weaponZones = new int[]{22, 33, 55, 87};
     public GameObject healthDrop;
     public float spawnTime = 10.0f;
-    public int weapons, heals = 0;
-    private int cols, rows = 10;
+    private int cols = 10;
+    private int rows = 10;
     private float tileSize = 1;
     float spawnTimer = 0;
 
-    public static int availableWeapon()
-    {
-
-    }
-
+    // Creates grid of tagged tiles and sets up walls based on array
     private void GenerateGrid()
     {
         int tileCount = 0;
@@ -58,15 +56,17 @@ public class GridManager : MonoBehaviour
         transform.position = new Vector2(-gridW/2 + tileSize/2, -((gridH/2)-1) - tileSize/2);
     }
 
+    // initializes healCheck array
     private void initializeItems()
     {
         for(int i = 0; i < 4; i++)
         {
             healChecks[healZones[i]] = 0;
-            weaponChecks[weaponZones[i]] = 0;
+            //weaponChecks[weaponZones[i]] = 0;
         }
     }
 
+    // Used to determine if a tile has a wall
     private bool isWall(int pos)
     {
         bool res = false;
@@ -85,26 +85,30 @@ public class GridManager : MonoBehaviour
     {
         for (int i = 0; i < MAX_ITEMS; i++)
         {
-            if((Player.playerPos == healZones[i] || Enemy.enemyPos == healZones[i]) && healChecks[healZones[i]] == 1 ){
+            if((PlayerControl.playerPos == healZones[i] || EnemyControl.enemyPos == healZones[i]) && healChecks[healZones[i]] == 1 ){
                 healChecks[healZones[i]] = 0;
                 availableHealth-=1;
+                Debug.Log("availableHealth: "+availableHealth);
             }
 
-            if((Player.playerPos == weaponZones[i] || Enemy.enemyPos == weaponZones[i]) && weaponChecks[weaponZones[i]] == 1 ){
-                weaponChecks[weaponZones[i]] = 0;
-                availableWeapon-=1;
-            }
+            // if((PlayerControl.playerPos == weaponZones[i] || EnemyControl.enemyPos == weaponZones[i]) && weaponChecks[weaponZones[i]] == 1 ){
+            //     weaponChecks[weaponZones[i]] = 0;
+            //     availableWeapon-=1;
+            // }
         }
     }
 
     void Start()
     {
         initializeItems();
+
         GenerateGrid();
     }
 
+    // The health pack generation code is executed in Update
     void Update()
     {
+        itemTracker();
         spawnTimer+=Time.deltaTime;
         if(spawnTimer>spawnTime)
         {
@@ -115,7 +119,7 @@ public class GridManager : MonoBehaviour
                 if (chance > 0)
                 {
                     bool choosing = true;
-                    int square;
+                    int square = 0;
                     while(choosing)
                     {
                         square = UnityEngine.Random.Range(0, MAX_ITEMS);
@@ -126,6 +130,7 @@ public class GridManager : MonoBehaviour
                     }
                     healChecks[healZones[square]] = 1;
                     availableHealth+=1;
+                    Debug.Log("availableHealth: "+availableHealth);
 
                     GameObject currentTile = GameObject.FindWithTag(""+healZones[square]);
                     GameObject pack = Instantiate(healthDrop);
